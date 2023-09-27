@@ -19,7 +19,8 @@ export const productSchema = new Schema({
   createdAt: { type: Date, default: Date.now() },
   updateAt: { type: Date },
   stock: { type: Boolean, default: true },
-  price: { type: Number }
+  price: { type: Number },
+  category: { type: String, required: [true, 'El producto necesita una categoría'] }
 })
 
 export const Product = model('Product', productSchema)

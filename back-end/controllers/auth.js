@@ -94,3 +94,41 @@ export const profile = async (req, res) => {
     return res.status(500).json({ error: 'Error del servidor' })
   }
 }
+
+export const verifyUser = async (req, res) => {
+  const { email, code } = req.body
+
+  try {
+    const user = await User.findOne({ email })
+
+    if (!user) {
+      res.status(400).json({
+        message: 'No existe este usuario en la Base de Datos'
+      })
+      return
+    }
+    if (user.verified) {
+      res.status(400).json({
+        message: 'El usuario está correctamente verificado'
+      })
+      return
+    }
+
+    if (user.code !== code) {
+      res.status(401).json({
+        message: 'El codigo ingresado es incorrecto'
+      })
+      return
+    }
+
+    await User.findOneAndUpdate({ email }, { verified: true }, { new: true })
+    res.status(200).json({
+      message: 'Usuario verificado con éxito'
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({
+      message: 'Error en el servidor'
+    })
+  }
+}
