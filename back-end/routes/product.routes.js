@@ -16,6 +16,8 @@ router.post('/createProduct',
     check('title', 'Debe ingresar un título').not().isEmpty(),
     check('description', 'Debe ingresar una descripción al producto').not().isEmpty(),
     check('price', 'El producto debe tener un precio').isNumeric().not().isEmpty(),
+    check('category', 'Debe ingresar una categoría para el producto').not().isEmpty(),
+
     collectBugs
   ]
   , createProduct)
