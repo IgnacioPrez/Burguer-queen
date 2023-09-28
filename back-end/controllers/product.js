@@ -15,7 +15,7 @@ export const createProduct = async (req, res) => {
       return
     }
 
-    if (!Object.values(CATEGORIES).some((el) => el === productsData.category)) {
+    if (!CATEGORIES.filter((el) => el === productsData.category)) {
       res.status(401).json({ message: 'El producto no cuenta con una categoría válida' })
       return
     }
@@ -84,18 +84,43 @@ export const updateProduct = async (req, res) => {
       return
     }
 
-    await Product.findOneAndUpdate({ _id: id }, {
-      price,
-      stock,
-      updateAt: Date.now()
-    }, {
-      new: true
-    }
+    await Product.findOneAndUpdate(
+      { _id: id },
+      {
+        price,
+        stock,
+        updateAt: Date.now()
+      },
+      {
+        new: true
+      }
     )
     res.status(200).json({
       message: 'Product actualizado correctamente'
     })
   } catch (err) {
     console.log(err)
+  }
+}
+
+export const getProductsByFilter = async (req, res) => {
+  const category = req.query.category.trim()
+  console.log(category)
+  try {
+    const filterFound = !CATEGORIES.includes(category)
+
+    if (filterFound) {
+      return res.status(401).json({
+        message: 'El filtro es incorrecto'
+      })
+    }
+
+    const products = await Product.find({ category })
+    res.status(200).json({
+      products
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ message: 'Error en el servidor' })
   }
 }

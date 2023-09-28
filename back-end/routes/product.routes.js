@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import fileUpload from 'express-fileupload'
-import { createProduct, deleteProduct, getProducts, updateProduct } from '../controllers/product.js'
+import { createProduct, deleteProduct, getProducts, getProductsByFilter, updateProduct } from '../controllers/product.js'
 import { collectBugs } from '../middleware/collectBugs.js'
 import { check } from 'express-validator'
 
@@ -23,9 +23,8 @@ router.post('/createProduct',
   , createProduct)
 
 router.get('/', getProducts)
-
 router.delete('/delete-product/:id', deleteProduct)
-
 router.put('/update-product/:id', updateProduct)
+router.get('/filter-product/', getProductsByFilter)
 
 export default router
