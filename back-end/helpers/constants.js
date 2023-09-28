@@ -8,7 +8,4 @@ export const ROLES = {
 
 export const PORT = process.env.PORT
 
-export const CATEGORIES = {
-  BURGUER: 'burguer',
-  FRIES: 'fries'
-}
+export const CATEGORIES = ['burguer', 'fries']
