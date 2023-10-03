@@ -1,13 +1,24 @@
 import { Schema, model } from 'mongoose'
 
 export const ordersSchema = new Schema({
-  fullName: { type: String, required: [true, 'El nombre del destinatario es necesario'] },
+  fullName: { type: String, required: true },
   streetNumber: { type: Number },
-  streetName: { type: String, required: [true, 'La dirección es obligatoria'] },
-  phoneNumber: { type: Number, required: [true, 'Es necesario el contacto del cliente'] },
+  streetName: { type: String, required: true },
+  phoneNumber: { type: Number, required: true },
   shippingCost: { type: Number },
   totalPrice: { type: Number },
-  totalProducts: { type: Schema.Types.ObjectId, required: [true, 'Se requieren los productos'] }
+  items: [
+    {
+      productId: { type: Schema.Types.ObjectId, ref: 'Product' },
+      title: { type: String },
+      price: { type: Number },
+      quantity: { type: Number }
+    }
+  ],
+  city: { type: String, required: true },
+  isPay: { type: Boolean, default: false },
+  extra: { type: String },
+  createdAt: { type: Date, default: Date.now() }
 })
 
-export const Orders = model('Orders', ordersSchema)
+export const Orders = model('Order', ordersSchema)
