@@ -10,6 +10,8 @@ import { LocationContext } from '../../context/LocationContext'
 const NavAdmin = () => {
   const { location, locationIsHome, locationIsCRUD } = useContext(LocationContext)
 
+  console.log(location)
+
   return (
     <NavContent>
       <h2>Admin</h2>

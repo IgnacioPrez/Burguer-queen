@@ -4,7 +4,7 @@ import { allRoutes } from '../routes/routes'
 export const LocationContext = createContext()
 
 export const LocationProvider = ({ children }) => {
-  const [location, setLocation] = useState('')
+  const [location, setLocation] = useState(allRoutes.HOME_ADMIN)
 
   const locationIsHome = () => {
     setLocation(allRoutes.HOME_ADMIN)
