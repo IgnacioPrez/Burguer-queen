@@ -1,7 +1,7 @@
 import React from 'react'
 import NavAdmin from '../../components/nav/NavAdmin'
-import Header from '../../components/header/Header'
 import { ContainerHome } from './styles'
+import { Header } from '../../components/header'
 
 const HomeAdmin = () => {
   return (
