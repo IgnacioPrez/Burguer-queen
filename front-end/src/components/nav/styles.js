@@ -31,9 +31,7 @@ export const NavList = styled.ul`
   flex-direction: column;
   width: 100%;
 
-
   ${(props) => {
-    console.log(props)
     return props.location === allRoutes.HOME_ADMIN
 ? (
       `

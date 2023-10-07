@@ -3,6 +3,6 @@ export const themes = {
   secondTextColorNav: '#A4A6B3',
   firstTextColorNav: '#DDE2FF',
   hoverNav: '#60626E',
-  FirstTextColor: '#232D42',
-  SecondTextColor: '#8A92A6'
+  FirstTextColor: '#4A4C56',
+  SecondTextColor: '#667085'
 }

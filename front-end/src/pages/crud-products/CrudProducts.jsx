@@ -1,11 +1,13 @@
 import React from 'react'
 import { NavAdmin } from '../../components/nav'
-
+import { ContentCRUD } from './styles'
+import { ProductMain } from '../../components/main-crud/index'
 const CrudProducts = () => {
   return (
-    <div>
+    <ContentCRUD>
       <NavAdmin />
-    </div>
+      <ProductMain />
+    </ContentCRUD>
   )
 }
 
