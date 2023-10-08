@@ -44,7 +44,7 @@ export const payProducts = async (req, res) => {
         failure: `http://localhost:${PORT}/payment/failure`,
         pending: `http://localhost:${PORT}/payment/pending`
       },
-      notification_url: `https://c555-181-117-24-61.ngrok.io/payment/webhook/${orderId}`
+      notification_url: `https://98ac-181-117-24-61.ngrok.io/payment/webhook/${orderId}`
     })
 
     res.status(200).json(data.body)
@@ -60,13 +60,12 @@ export const receiveWebhook = async (req, res) => {
   try {
     const data = await mercadopago.payment.findById(payment['data.id'])
     const order = await Orders.findOne({ _id: orderId, isPay: false })
-
     if (payment.type === 'payment') {
       const pay = new Payment({
         statusPaid: true,
         createdAt: Date.now(),
         ordersId: order._id,
-        paymentData: data.response
+        paymentData: data
       })
       await pay.save()
       await Orders.findOneAndUpdate({ _id: orderId, isPay: false }, { isPay: true }, { new: true })

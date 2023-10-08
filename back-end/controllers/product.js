@@ -43,11 +43,23 @@ export const createProduct = async (req, res) => {
 }
 
 export const getProducts = async (req, res) => {
-  const products = await Product.find()
-  if (!products) return res.status(400).json({ message: 'Error al obtener los productos' })
-  res.json({
-    products
-  })
+  const page = req.query.page || 1
+  const limit = req.query.limit || 10
+  try {
+    const options = {
+      page,
+      limit
+    }
+    const result = await Product.paginate({}, options)
+    if (!result) return res.status(400).json({ message: 'Error al obtener los productos' })
+
+    res.json({
+      result
+    })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ message: 'Error en el servidor' })
+  }
 }
 
 export const deleteProduct = async (req, res) => {
@@ -105,7 +117,6 @@ export const updateProduct = async (req, res) => {
 
 export const getProductsByFilter = async (req, res) => {
   const category = req.query.category.trim()
-  console.log(category)
   try {
     const filterFound = !CATEGORIES.includes(category)
 
