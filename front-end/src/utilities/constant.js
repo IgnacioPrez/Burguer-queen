@@ -103,3 +103,5 @@ export const BURGUERS = [
   }
 
 ]
+
+export const baseURL = import.meta.env.VITE_DB_URL

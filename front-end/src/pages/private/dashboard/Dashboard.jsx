@@ -1,9 +1,9 @@
 import React from 'react'
-import NavAdmin from '../../components/nav/NavAdmin'
 import { ContainerHome } from './styles'
-import { Header } from '../../components/header'
+import { Header } from '../../../components/header/'
+import { NavAdmin } from '../../../components/nav/'
 
-const HomeAdmin = () => {
+const Dashboard = () => {
   return (
     <ContainerHome>
       <Header />
@@ -12,4 +12,4 @@ const HomeAdmin = () => {
   )
 }
 
-export default HomeAdmin
+export default Dashboard

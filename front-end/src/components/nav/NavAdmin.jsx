@@ -1,16 +1,29 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import HomeIcon from '@mui/icons-material/Home'
 import FastfoodIcon from '@mui/icons-material/Fastfood'
 import { LogoutContent, NavContent, NavList, Navbar } from './styles'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { Link } from 'react-router-dom'
-import { allRoutes } from '../../routes/routes'
+import { PrivateRoutes } from '../../routes/routes'
 import { LocationContext } from '../../context/LocationContext'
+import { useDispatch } from 'react-redux'
+import { logout } from '../../redux/slices/authSlices'
+import { baseURL } from '../../utilities/constant'
 
 const NavAdmin = () => {
   const { location, locationIsHome, locationIsCRUD } = useContext(LocationContext)
+  const dispatch = useDispatch()
 
-  console.log(location)
+  const endSesion = () => {
+    fetch(`${baseURL}/user/logout`)
+      .then((data) => data.json())
+      .then((result) => {
+        if (result.ok) {
+          dispatch(logout())
+        }
+      })
+      .catch((err) => console.error(err))
+  }
 
   return (
     <NavContent>
@@ -19,17 +32,23 @@ const NavAdmin = () => {
         <NavList location={location}>
           <li>
             <HomeIcon />
-            <Link to={allRoutes.HOME_ADMIN} onClick={locationIsHome}>General</Link>
+            <Link to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.DASHBOARD}`} onClick={locationIsHome}>
+              General
+            </Link>
           </li>
           <li>
             <FastfoodIcon />
-            <Link to={allRoutes.CRUD_PRODUCTS} onClick={locationIsCRUD}>Productos</Link>
+            <Link to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.CRUD_PRODUCTS}`} onClick={locationIsCRUD}>
+              Productos
+            </Link>
           </li>
         </NavList>
       </Navbar>
       <LogoutContent>
-        <LogoutIcon />
-        <p>Cerrar sesión</p>
+        <button onClick={endSesion}>
+          <LogoutIcon />
+          Cerrar sesión
+        </button>
       </LogoutContent>
     </NavContent>
   )
