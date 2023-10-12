@@ -1,16 +1,16 @@
 import { createContext, useState } from 'react'
-import { allRoutes } from '../routes/routes'
+import { PrivateRoutes } from '../routes/routes'
 
 export const LocationContext = createContext()
 
 export const LocationProvider = ({ children }) => {
-  const [location, setLocation] = useState(allRoutes.HOME_ADMIN)
+  const [location, setLocation] = useState(PrivateRoutes.DASHBOARD)
 
   const locationIsHome = () => {
-    setLocation(allRoutes.HOME_ADMIN)
+    setLocation(PrivateRoutes.DASHBOARD)
   }
   const locationIsCRUD = () => {
-    setLocation(allRoutes.CRUD_PRODUCTS)
+    setLocation(PrivateRoutes.CRUD_PRODUCTS)
   }
 
   return (

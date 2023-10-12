@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { allRoutes } from '../../routes/routes'
+import { PrivateRoutes } from '../../routes/routes'
 
 export const NavContent = styled.div`
   width: 15vw;
@@ -32,7 +32,7 @@ export const NavList = styled.ul`
   width: 100%;
 
   ${(props) => {
-    return props.location === allRoutes.HOME_ADMIN
+    return props.location === PrivateRoutes.DASHBOARD
 ? (
       `
         li:nth-child(1){
@@ -78,7 +78,16 @@ export const LogoutContent = styled.div`
   height: 10%;
   justify-content: center;
   align-items: center;
-  gap: 10px;
   color: ${(props) => props.theme.firstTextColorNav};
-  cursor: pointer;
+  button{
+    border: none;
+    background: transparent;
+    color: inherit;
+    padding: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
 `

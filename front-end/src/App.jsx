@@ -1,21 +1,27 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
-import { allRoutes } from './routes/routes'
+import { PrivateRoutes, PublicRoutes } from './routes/routes'
 import { Loader } from './components/loader'
-const CrudProducts = lazy(() => import('./pages/crud-products/CrudProducts'))
-const HomeAdmin = lazy(() => import('./pages/home-admin/HomeAdmin'))
+import { AuthGuard } from './components/guard/AuthGuard'
+import { RoutesWithNotFound } from './utilities/routes-with-not-found'
+const SignUp = lazy(() => import('./pages/signup/SignUp'))
+const Login = lazy(() => import('./pages/login/Login'))
+const Private = lazy(() => import('./pages/private/Private'))
 
 function App () {
   return (
     <Suspense fallback={<Loader />}>
       <BrowserRouter>
-        <Routes>
-          <Route path={allRoutes.CRUD_PRODUCTS} element={<CrudProducts />} />
-          <Route path={allRoutes.HOME_ADMIN} element={<HomeAdmin />} />
-        </Routes>
+        <RoutesWithNotFound>
+          <Route path='/' element={<Navigate to={PrivateRoutes.PRIVATE} />} />
+          <Route element={<AuthGuard />}>
+            <Route path={`${PrivateRoutes.PRIVATE}/*`} element={<Private />} />
+          </Route>
+          <Route path={PublicRoutes.SIGNUP} element={<SignUp />} />
+          <Route path={PublicRoutes.LOGIN} element={<Login />} />
+        </RoutesWithNotFound>
       </BrowserRouter>
     </Suspense>
-
   )
 }
 
