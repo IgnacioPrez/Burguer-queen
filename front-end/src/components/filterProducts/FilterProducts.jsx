@@ -1,7 +1,7 @@
 import React from 'react'
 import { ContainerFilter, FilterContent, SearchFilter } from './styles'
 import SearchIcon from '@mui/icons-material/Search'
-import TuneIcon from '@mui/icons-material/Tune'
+import { SearchByFilter } from '../search-by-filter'
 
 const FilterProducts = () => {
   return (
@@ -11,8 +11,7 @@ const FilterProducts = () => {
         <input type='text' placeholder='Busca tu producto' />
       </SearchFilter>
       <FilterContent>
-        <TuneIcon />
-        Filtros
+        <SearchByFilter />
       </FilterContent>
     </ContainerFilter>
   )
