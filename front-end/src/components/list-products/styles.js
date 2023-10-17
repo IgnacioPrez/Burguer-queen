@@ -9,7 +9,6 @@ export const ConteinerProducts = styled.section`
   flex-direction: column;
   padding: 10px;
   overflow-y: auto;
-
 `
 
 export const TitleList = styled.div`
@@ -48,9 +47,7 @@ export const Product = styled.div`
   padding: 3px;
   :nth-child(5) {
     font-weight: bold;
-    ${(props) => {
-      return props.status ? 'color:#1A9882' : 'color:#EB3D4D'
-    }}
+    ${(props) => (props.status ? 'color:#1A9882' : 'color:#EB3D4D')}
   }
 `
 export const ProductName = styled.div`

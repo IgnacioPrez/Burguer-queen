@@ -1,10 +1,28 @@
-import { BURGUERS } from '../../utilities/constant'
+import { BURGUERS, TYPES_MODAL } from '../../utilities/constant'
 import { ActionsContent, ContainerList, ConteinerProducts, Product, ProductName, TitleList } from './styles'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Pagination } from '../pagination'
+import { PaginationList } from '../pagination-list'
+import { useDispatch } from 'react-redux'
+import { openModal } from '../../redux/slices/modalSlices'
 
 export const ListProducts = () => {
+  const dispatch = useDispatch()
+
+  const handleOPen = (id, type) => {
+    return type === TYPES_MODAL.EDIT
+      ? dispatch(openModal({
+        open: true,
+        id,
+        type: TYPES_MODAL.EDIT
+      }))
+      : dispatch(openModal({
+        open: true,
+        id,
+        type: TYPES_MODAL.DELETE
+      }))
+  }
+
   return (
     <ConteinerProducts>
       <TitleList>
@@ -32,15 +50,18 @@ export const ListProducts = () => {
               <p>{price}</p>
               <p>{status ? 'Disponible' : 'Agotado'}</p>
               <ActionsContent>
-                <EditIcon />
-                <DeleteIcon />
+                <div onClick={() => { handleOPen(id, TYPES_MODAL.EDIT) }}>
+                  <EditIcon />
+                </div>
+                <div onClick={() => handleOPen(id, TYPES_MODAL.DELETE)}>
+                  <DeleteIcon />
+                </div>
               </ActionsContent>
             </Product>
           )
         })}
-        <Pagination />
+        <PaginationList />
       </ContainerList>
-
     </ConteinerProducts>
   )
 }

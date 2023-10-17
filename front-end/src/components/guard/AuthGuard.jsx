@@ -4,6 +4,5 @@ import { PublicRoutes } from '../../routes/routes'
 
 export const AuthGuard = () => {
   const userState = useSelector((store) => store.user)
-  console.log(userState)
   return userState.token ? <Outlet /> : <Navigate replace to={PublicRoutes.LOGIN} />
 }

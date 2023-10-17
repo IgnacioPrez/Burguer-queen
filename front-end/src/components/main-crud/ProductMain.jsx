@@ -3,7 +3,7 @@ import AddIcon from '@mui/icons-material/Add'
 import { ListProducts } from '../list-products/ListProducts'
 import { FilterProducts } from '../filterProducts'
 
-const ProductMain = () => {
+const ProductMain = ({ openForm }) => {
   return (
     <Main>
       <HeaderCrud>
@@ -11,7 +11,7 @@ const ProductMain = () => {
           <p>Productos de Burguer Queen 🍔</p>
         </TitleCrud>
         <AddProduct>
-          <AddBtn>
+          <AddBtn onClick={openForm}>
             <AddIcon />
             Agregar Producto
           </AddBtn>
