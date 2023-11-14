@@ -2,7 +2,7 @@ import { Button, Menu, MenuItem } from '@mui/material'
 import TuneIcon from '@mui/icons-material/Tune'
 import { useState } from 'react'
 
-const SearchByFilter = () => {
+export const SearchByFilter = () => {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const handleClick = (event) => {

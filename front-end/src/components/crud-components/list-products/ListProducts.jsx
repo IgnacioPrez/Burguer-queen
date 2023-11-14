@@ -1,12 +1,12 @@
-import { BURGUERS, TYPES_MODAL } from '../../utilities/constant'
 import { ActionsContent, ContainerList, ConteinerProducts, Product, ProductName, TitleList } from './styles'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { PaginationList } from '../pagination-list'
 import { useDispatch } from 'react-redux'
-import { openModal } from '../../redux/slices/modalSlices'
+import { BURGUERS, TYPES_MODAL } from '../../../utilities/constant'
+import { openModal } from '../../../redux/slices/modalSlices'
 
-export const ListProducts = () => {
+const ListProducts = () => {
   const dispatch = useDispatch()
 
   const handleOPen = (id, type) => {
@@ -65,3 +65,4 @@ export const ListProducts = () => {
     </ConteinerProducts>
   )
 }
+export default ListProducts

@@ -1,11 +1,26 @@
 import { Navigate, Route } from 'react-router-dom'
 import { PrivateRoutes } from '../../routes/routes'
-import { lazy } from 'react'
+import { lazy, useContext, useEffect } from 'react'
 import { RoutesWithNotFound } from '../../utilities/routes-with-not-found'
+import { LocationContext } from '../../context/LocationContext'
 const Dashboard = lazy(() => import('./dashboard/Dashboard'))
 const CrudProdcuts = lazy(() => import('./crud-products/CrudProducts'))
 
 const Private = () => {
+  const { locationIsHome, locationIsCRUD } = useContext(LocationContext)
+  const path = window.location.pathname
+
+  useEffect(() => {
+    if (path.includes(PrivateRoutes.DASHBOARD)) {
+      locationIsHome()
+    } else if (path === `/${PrivateRoutes.PRIVATE}`) {
+      locationIsHome()
+    } else {
+      locationIsCRUD()
+    }
+  }, [path])
+
+  console.log(path)
   return (
     <RoutesWithNotFound>
       <Route path='/' element={<Navigate to={PrivateRoutes.DASHBOARD} />} />

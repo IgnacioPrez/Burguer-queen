@@ -1,9 +1,9 @@
 import { Box, Modal, TextField } from '@mui/material'
-import { stylesModal } from '../../utilities/constant'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { FormCrud, ImageInfo, RowsFields, Uploader } from './styles'
 import { useState } from 'react'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
+import { stylesModal } from '../../../utilities/constant'
 
 const FormAdd = ({ viewForm, closeForm }) => {
   const [image, setImage] = useState()

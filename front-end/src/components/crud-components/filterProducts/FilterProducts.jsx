@@ -1,7 +1,6 @@
-import React from 'react'
+import { SearchByFilter } from '../search-by-filter'
 import { ContainerFilter, FilterContent, SearchFilter } from './styles'
 import SearchIcon from '@mui/icons-material/Search'
-import { SearchByFilter } from '../search-by-filter'
 
 const FilterProducts = () => {
   return (

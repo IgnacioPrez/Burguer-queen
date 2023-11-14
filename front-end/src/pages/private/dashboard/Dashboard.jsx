@@ -1,14 +1,17 @@
-import React from 'react'
-import { ContainerHome } from './styles'
-import { Header } from '../../../components/header/'
+import { ContainerDashboard, MainDashboard } from './styles'
 import { NavAdmin } from '../../../components/nav/'
+import { Header } from '../../../components/dashboard-components/header'
+import { OrderList } from '../../../components/dashboard-components/order-list'
 
 const Dashboard = () => {
   return (
-    <ContainerHome>
-      <Header />
+    <ContainerDashboard>
       <NavAdmin />
-    </ContainerHome>
+      <MainDashboard>
+        <Header />
+        <OrderList />
+      </MainDashboard>
+    </ContainerDashboard>
   )
 }
 

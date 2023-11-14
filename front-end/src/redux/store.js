@@ -4,10 +4,12 @@ import modalReducer from './slices/modalSlices'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import persistStore from 'redux-persist/es/persistStore'
+import productReducer from './slices/productSlice'
 
 const reducers = combineReducers({
   user: authReducer,
-  modal: modalReducer
+  modal: modalReducer,
+  product: productReducer
 })
 
 const persistConfig = {

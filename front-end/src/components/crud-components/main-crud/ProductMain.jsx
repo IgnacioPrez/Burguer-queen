@@ -1,7 +1,7 @@
+import { FilterProducts } from '../filterProducts'
+import { ListProducts } from '../list-products'
 import { AddBtn, AddProduct, HeaderCrud, Main, TitleCrud } from './styles'
 import AddIcon from '@mui/icons-material/Add'
-import { ListProducts } from '../list-products/ListProducts'
-import { FilterProducts } from '../filterProducts'
 
 const ProductMain = ({ openForm }) => {
   return (

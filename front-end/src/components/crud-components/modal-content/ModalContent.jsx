@@ -1,7 +1,7 @@
 import { Box } from '@mui/material'
 import Modal from '@mui/material/Modal'
 import { useDispatch, useSelector } from 'react-redux'
-import { closeModal } from '../../redux/slices/modalSlices'
+import { closeModal } from '../../../redux/slices/modalSlices'
 
 const style = {
   position: 'absolute',

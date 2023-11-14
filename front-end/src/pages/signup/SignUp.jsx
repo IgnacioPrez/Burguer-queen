@@ -46,7 +46,6 @@ export default function SignUp () {
     },
     validationSchema: validationSchemaSignup
   })
-  // 50yun4admin
   return (
     <RegisterContainer>
       <Container component='main' maxWidth='xs'>
