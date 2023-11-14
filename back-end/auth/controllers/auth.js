@@ -1,11 +1,11 @@
-import { tokenGenerator } from '../helpers/generateJWT.js'
-import { sendEmail } from '../mailer/mailer.js'
+import { tokenGenerator } from '../../helpers/generateJWT.js'
+import { sendEmail } from '../../mailer/mailer.js'
 import { User } from '../model/user.model.js'
 import bcryptjs from 'bcryptjs'
 import randomString from 'randomstring'
 import jwt from 'jsonwebtoken'
 import { config } from 'dotenv'
-import { generateRefreshToken } from '../helpers/refreshToken.js'
+import { generateRefreshToken } from '../../helpers/refreshToken.js'
 
 config()
 
@@ -42,10 +42,10 @@ export const register = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-  const { email, password } = req.body
+  const { userName, password } = req.body
 
   try {
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ userName })
     if (!user) {
       res.status(400).json({
         message: 'No se encontró el correo en la Base de Datos.'
@@ -61,12 +61,13 @@ export const login = async (req, res) => {
       })
       return
     }
-
-    const token = await tokenGenerator(user.id, res)
-    generateRefreshToken(user.id, res)
+    await tokenGenerator(user.id, res)
+    const refreshToken = generateRefreshToken(user.id, res)
     res.status(200).json({
-      user,
-      token
+      id: user._id,
+      userName: user.userName,
+      fullName: user.fullName,
+      refreshToken
     })
   } catch (error) {
     console.log(error)

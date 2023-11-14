@@ -1,4 +1,4 @@
-import { Product } from '../model/product.model.js'
+import { Product } from '../product/model/product.model.js'
 
 export const validateProductIds = async (req, res, next) => {
   const { items } = req.body

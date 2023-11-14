@@ -1,7 +1,7 @@
-import { Orders } from '../model/order.model.js'
+import { Orders } from '../../order/model/order.model.js'
 import mercadopago from 'mercadopago'
 import { config } from 'dotenv'
-import { PORT } from '../helpers/constants.js'
+import { PORT } from '../../helpers/constants.js'
 import { Payment } from '../model/payment.model.js'
 
 config()

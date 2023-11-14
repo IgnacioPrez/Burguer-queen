@@ -15,6 +15,8 @@ export const generateRefreshToken = (id, res) => {
       expires: new Date(Date.now() + expiresIn * 1000),
       sameSite: 'none'
     })
+
+    return refreshToken
   } catch (error) {
     console.log(error)
   }

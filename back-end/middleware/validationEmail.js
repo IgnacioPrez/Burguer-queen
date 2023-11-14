@@ -1,5 +1,5 @@
 import { sendEmail } from '../mailer/mailer.js'
-import { User } from '../model/user.model.js'
+import { User } from '../auth/model/user.model.js'
 
 export const existEmail = async (email) => {
   const thisEmailInDB = await User.findOne({ email })

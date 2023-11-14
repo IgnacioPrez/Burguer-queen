@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import { login, profile, register, verifyUser } from '../controllers/auth.js'
+import { login, logout, profile, register, verifyUser } from '../controllers/auth.js'
 import { check } from 'express-validator'
-import { collectBugs } from '../middleware/collectBugs.js'
-import { existEmail } from '../middleware/validationEmail.js'
+import { collectBugs } from '../../middleware/collectBugs.js'
+import { existEmail } from '../../middleware/validationEmail.js'
 
 const router = Router()
 
@@ -23,7 +23,7 @@ router.post(
 router.post(
   '/login',
   [
-    check('email', 'El correo es obligatorio').not().isEmpty().isEmail(),
+    check('userName', 'El correo es obligatorio').not().isEmpty(),
     check('password', 'La contraseña es requerida').not().isEmpty(),
     collectBugs
   ],
@@ -37,4 +37,6 @@ router.put('/verify', [
   check('code', 'El código de verificación es requerido').not().isEmpty(),
   collectBugs
 ], verifyUser)
+
+router.get('/logout', logout)
 export default router

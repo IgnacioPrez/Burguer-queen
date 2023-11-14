@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import fileUpload from 'express-fileupload'
-import { createProduct, deleteProduct, getProducts, getProductsByFilter, updateProduct } from '../controllers/product.js'
-import { collectBugs } from '../middleware/collectBugs.js'
+import { createProduct, deleteProduct, getProducts, getProductsByFilter, updateProduct } from '../controller/product.js'
+import { collectBugs } from '../../middleware/collectBugs.js'
 import { check } from 'express-validator'
 
 const router = Router()

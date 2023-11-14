@@ -1,4 +1,4 @@
-import { isValidItems } from '../helpers/validationDB.js'
+import { isValidItems } from '../../helpers/validationDB.js'
 import { Orders } from '../model/order.model.js'
 
 export const AddProduct = async (req, res) => {
@@ -11,11 +11,11 @@ export const AddProduct = async (req, res) => {
       return
     }
 
-    const newTotal = await items.map((el) => el.price).reduce((prev, acc) => prev + acc, 0)
+    // const newTotal = await items.map((el) => el.price).reduce((prev, acc) => prev + acc, 0)
     const order = new Orders({
       fullName,
       items,
-      totalPrice: newTotal,
+      totalPrice: await items.map((el) => el.price).reduce((prev, acc) => prev + acc, 0),
       payment: false,
       phoneNumber,
       streetName,

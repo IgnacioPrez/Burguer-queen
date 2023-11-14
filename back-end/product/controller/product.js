@@ -1,12 +1,11 @@
 import { Product } from '../model/product.model.js'
-import { deleteImage, uploadImage } from '../helpers/cloudinary.js'
+import { deleteImage, uploadImage } from '../../helpers/cloudinary.js'
 import fs from 'fs-extra'
-import { CATEGORIES } from '../helpers/constants.js'
+import { CATEGORIES } from '../../helpers/constants.js'
 
 export const createProduct = async (req, res) => {
-  const productsData = req.body
-  const existPathImage = req.files.image
-
+  const productData = req.body
+  const existPathImage = req.files?.image
   try {
     if (!existPathImage) {
       res.status(400).json({
@@ -15,11 +14,11 @@ export const createProduct = async (req, res) => {
       return
     }
 
-    if (!CATEGORIES.filter((el) => el === productsData.category)) {
+    if (!CATEGORIES.filter((el) => el === productData.category)) {
       res.status(401).json({ message: 'El producto no cuenta con una categoría válida' })
       return
     }
-    const products = new Product(productsData)
+    const products = new Product(productData)
     const productFound = await Product.findOne({ title: products.title })
 
     if (productFound) return res.status(400).json({ message: 'El producto ya existe' })

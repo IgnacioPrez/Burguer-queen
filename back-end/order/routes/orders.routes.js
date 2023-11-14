@@ -1,9 +1,9 @@
 import { Router } from 'express'
-import { collectBugs } from '../middleware/collectBugs.js'
-import { AddProduct, getPaymentOrders } from '../controllers/orders.js'
+import { collectBugs } from '../../middleware/collectBugs.js'
+import { AddProduct, getPaymentOrders } from '../controller/orders.js'
 import { check } from 'express-validator'
-import { validateProductIds } from '../middleware/validateProductIds.js'
-import { validateJWT } from '../middleware/validateJWT.js'
+import { validateProductIds } from '../../middleware/validateProductIds.js'
+import { validateJWT } from '../../middleware/validateJWT.js'
 
 const router = Router()
 
