@@ -5,11 +5,11 @@ export const existEmail = async (email) => {
   const thisEmailInDB = await User.findOne({ email })
 
   if (thisEmailInDB && thisEmailInDB.verified) {
-    throw new Error(`El correo ${email} ya esta registrado`)
+    throw new Error(`The email ${email} has already been registered.`)
   }
 
   if (thisEmailInDB && !thisEmailInDB.verified) {
     await sendEmail(email, thisEmailInDB.code)
-    throw new Error(`El usuario ya está registrado. Se envió nuevamente el código de verificación a ${email}`)
+    throw new Error(`The user is now registered. The verification code was sent again to ${email}.`)
   }
 }

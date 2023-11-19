@@ -3,13 +3,13 @@ import { login, logout, profile, register, verifyUser } from '../controllers/aut
 import { check } from 'express-validator'
 import { collectBugs } from '../../middleware/collectBugs.js'
 import { existEmail } from '../../middleware/validationEmail.js'
+import { validateJWT } from '../../middleware/validateJWT.js'
 
 const router = Router()
 
 router.post(
   '/register',
   [
-    check('userName', 'El nombre de usuario es requerido').not().isEmpty(),
     check('fullName', 'Se requiere el nombre completo del usuario').not().isEmpty(),
     check('email', 'El correo es obligatorio').not().isEmpty().isEmail(),
     check('password', 'La contraseña es requerida').not().isEmpty(),
@@ -23,14 +23,17 @@ router.post(
 router.post(
   '/login',
   [
-    check('userName', 'El correo es obligatorio').not().isEmpty(),
+    check('email', 'El correo es obligatorio').not().isEmpty().isEmail(),
     check('password', 'La contraseña es requerida').not().isEmpty(),
     collectBugs
   ],
   login
 )
 
-router.get('/profile', profile)
+router.get('/profile', [
+  validateJWT,
+  collectBugs
+], profile)
 
 router.put('/verify', [
   check('email', 'El correo es obligatorio').not().isEmpty().isEmail(),

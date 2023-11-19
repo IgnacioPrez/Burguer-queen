@@ -2,7 +2,6 @@ import { Schema, model } from 'mongoose'
 import { ROLES } from '../../helpers/constants.js'
 
 const userSchema = new Schema({
-  userName: { type: String, required: [true, 'El nombre de usuario es requerido'] },
   fullName: { type: String, required: [true, 'El nombre  es requerido'] },
   email: { type: String, required: [true, 'El email es obligatorio'] },
   password: { type: String, required: [true, 'La contraseña es obligatorio'] },

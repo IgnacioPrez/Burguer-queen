@@ -1,29 +1,16 @@
-import { isValidItems } from '../../helpers/validationDB.js'
-import { Orders } from '../model/order.model.js'
+import { OrderService, OrderValidate } from '../service/order.service.js'
 
 export const AddProduct = async (req, res) => {
-  const { fullName, items, phoneNumber, city, streetName, extra } = req.body
-
+  const orderData = req.body
+  const validate = new OrderValidate()
+  const services = new OrderService()
   try {
-    const validateProducts = isValidItems(items)
+    const validateProducts = validate.validateItems(orderData.items)
     if (!validateProducts) {
       res.status(401).json({ message: 'Algunos productos no cumplen con los requisitos' })
       return
     }
-
-    // const newTotal = await items.map((el) => el.price).reduce((prev, acc) => prev + acc, 0)
-    const order = new Orders({
-      fullName,
-      items,
-      totalPrice: await items.map((el) => el.price).reduce((prev, acc) => prev + acc, 0),
-      payment: false,
-      phoneNumber,
-      streetName,
-      city,
-      shippingCost: 200,
-      extra
-    })
-
+    const order = services.createOrder(orderData)
     await order.save()
 
     res.status(200).json({ order })
@@ -34,9 +21,15 @@ export const AddProduct = async (req, res) => {
 }
 
 export const getPaymentOrders = async (req, res) => {
+  const services = new OrderService()
   try {
-    const ordersPay = Orders.find({ isPay: true })
-    res.status(200).json(ordersPay)
+    const orders = await services.obtainOrders()
+    return orders
+      ? (
+          res.status(200).json({ orders })
+
+        )
+      : res.status(404).json({ message: 'No se efectuó ninguna compra' })
   } catch (err) {
     console.error(err)
     res.status(500).json({ message: 'Error en el servidor' })

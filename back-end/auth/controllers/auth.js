@@ -1,77 +1,48 @@
-import { tokenGenerator } from '../../helpers/generateJWT.js'
-import { sendEmail } from '../../mailer/mailer.js'
 import { User } from '../model/user.model.js'
-import bcryptjs from 'bcryptjs'
-import randomString from 'randomstring'
-import jwt from 'jsonwebtoken'
 import { config } from 'dotenv'
-import { generateRefreshToken } from '../../helpers/refreshToken.js'
+import { AuthService, AuthValidate } from '../service/auth.service.js'
 
 config()
 
+// TODO: ERROR AL MANIPULAR EL TOKEN PARA FUTURAS PETICIONES
+
 export const register = async (req, res) => {
   const { userName, fullName, email, password, dni } = req.body
+  const services = new AuthService()
 
   try {
-    if (await User.findOne({ email })) {
-      res.status(401).json({
-        message: 'El usuario ya se encuentra en nuestra base de datos'
-      })
-      return
-    }
-
-    const user = new User({ userName, fullName, email, password, dni, verified: false })
-    const salt = bcryptjs.genSaltSync(15)
-    user.password = bcryptjs.hashSync(password, salt)
-
-    const newCode = randomString.generate(6)
-    user.code = newCode
-
-    await user.save()
-    await sendEmail(email, newCode)
-
+    const prevUser = new User({ userName, fullName, email, password, dni, verified: false })
+    const user = await services.createUser(prevUser)
     res.status(200).json({
       user
     })
   } catch (error) {
     res.status(500).json({
-      message: 'Error en el servidor'
+      message: 'Error on the server'
     })
-    console.log(error)
   }
 }
-
 export const login = async (req, res) => {
-  const { userName, password } = req.body
+  const { email, password } = req.body
+  const services = new AuthService()
+  const validation = new AuthValidate()
 
   try {
-    const user = await User.findOne({ userName })
-    if (!user) {
-      res.status(400).json({
-        message: 'No se encontró el correo en la Base de Datos.'
+    const [existsUser, passwordCorrect] = await Promise.all([validation.userExists(email), validation.verifiedPassword(email, password)])
+    if (!existsUser && !passwordCorrect) {
+      res.status(404).json({
+        message: 'Usuario no encontrado/ credenciales incorrectas.'
       })
       return
     }
+    const user = await services.logg(email, res)
 
-    const verifiedPassword = bcryptjs.compareSync(password, user.password)
-
-    if (!verifiedPassword) {
-      res.status(400).json({
-        message: 'La contraseña es incorrecta'
-      })
-      return
-    }
-    await tokenGenerator(user.id, res)
-    const refreshToken = generateRefreshToken(user.id, res)
     res.status(200).json({
-      id: user._id,
-      userName: user.userName,
-      fullName: user.fullName,
-      refreshToken
+      user
     })
   } catch (error) {
-    console.log(error)
-    res.status(500).json({
+    console.error(error.message)
+    res.status(400).json({
       message: 'Error en el servidor'
     })
   }
@@ -82,13 +53,13 @@ export const logout = (req, res) => {
   res.status(200).json({ ok: true })
 }
 
+// TODO: CON ESTA RUTA REALIZAR TODAS LAS PETICIONES DEL ADMIN
 export const profile = async (req, res) => {
-  const { refreshToken } = req.cookies
-  try {
-    if (!refreshToken) throw new Error('No existe el token')
-    const { id } = jwt.verify(refreshToken, process.env.SECRET_PASSWORD_REFRESH)
-    const token = await tokenGenerator(id, res)
+  const { id } = req.body.userConfirmed
+  const services = new AuthService()
 
+  try {
+    const token = await services.createToken(id, res)
     return res.status(200).json({ token })
   } catch (error) {
     console.log(error)
@@ -98,31 +69,24 @@ export const profile = async (req, res) => {
 
 export const verifyUser = async (req, res) => {
   const { email, code } = req.body
+  const validation = new AuthValidate()
+  const services = new AuthService()
 
   try {
-    const user = await User.findOne({ email })
-
-    if (!user) {
+    const [foundUser, credentialasVerified] = await Promise.all([validation.userExists(email), validation.verifiedUser(email)])
+    if (!foundUser) {
       res.status(400).json({
         message: 'No existe este usuario en la Base de Datos'
       })
       return
     }
-    if (user.verified) {
-      res.status(400).json({
-        message: 'El usuario está correctamente verificado'
-      })
-      return
-    }
-
-    if (user.code !== code) {
+    if (!credentialasVerified.verified && credentialasVerified.code !== code) {
       res.status(401).json({
-        message: 'El codigo ingresado es incorrecto'
+        message: 'El usuario no se encuentra correctamente verificado. Revise el codigo de verificación en su correo.'
       })
       return
     }
-
-    await User.findOneAndUpdate({ email }, { verified: true }, { new: true })
+    await services.verifyUser(email)
     res.status(200).json({
       message: 'Usuario verificado con éxito'
     })
