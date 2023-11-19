@@ -1,42 +1,24 @@
-import { Product } from '../model/product.model.js'
-import { deleteImage, uploadImage } from '../../helpers/cloudinary.js'
-import fs from 'fs-extra'
-import { CATEGORIES } from '../../helpers/constants.js'
+import { ProductService, ProductValidate } from '../service/product.service.js'
 
 export const createProduct = async (req, res) => {
   const productData = req.body
   const existPathImage = req.files?.image
+  const services = new ProductService()
+  const validate = new ProductValidate()
   try {
-    if (!existPathImage) {
-      res.status(400).json({
-        message: 'El archivo no contiene una imagen'
-      })
+    if (!validate.correctCategory(productData) || !existPathImage) {
+      res.status(401).json({ message: 'El producto no cuenta con caracteristicas válidas' })
       return
     }
+    if (await validate.existsProduct(productData)) return res.status(401).json({ message: 'El producto ya existe' })
 
-    if (!CATEGORIES.filter((el) => el === productData.category)) {
-      res.status(401).json({ message: 'El producto no cuenta con una categoría válida' })
-      return
-    }
-    const products = new Product(productData)
-    const productFound = await Product.findOne({ title: products.title })
-
-    if (productFound) return res.status(400).json({ message: 'El producto ya existe' })
-
-    if (existPathImage) {
-      const result = await uploadImage(existPathImage.tempFilePath)
-      products.image = {
-        public_id: result.public_id,
-        url: result.secure_url
-      }
-      await fs.unlink(existPathImage.tempFilePath)
-    }
-
-    await products.save()
-    res.json({
-      products
+    const product = await services.createProductInDB(productData, existPathImage)
+    await product.save()
+    return res.status(200).json({
+      product
     })
   } catch (err) {
+    console.error(err)
     throw new Error(`Ocurrio un error al crear el producto: --> ${err}`)
   }
 }
@@ -44,17 +26,18 @@ export const createProduct = async (req, res) => {
 export const getProducts = async (req, res) => {
   const page = req.query.page || 1
   const limit = req.query.limit || 10
+  const services = new ProductService()
   try {
-    const options = {
-      page,
-      limit
-    }
-    const result = await Product.paginate({}, options)
-    if (!result) return res.status(400).json({ message: 'Error al obtener los productos' })
-
-    res.json({
-      result
-    })
+    const result = await services.obtainProducts(page, limit)
+    return result
+      ? (
+          res.status(200).json({
+            result
+          })
+        )
+      : (
+          res.status(401).json({ message: 'Error al obtener los productos' })
+        )
   } catch (err) {
     console.error(err)
     res.status(500).json({ message: 'Error en el servidor' })
@@ -63,51 +46,45 @@ export const getProducts = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
   const { id } = req.params
+  const services = new ProductService()
   try {
-    const product = await Product.findByIdAndDelete({ _id: id })
-    if (!product) {
-      res.status(401).json({
+    const product = await services.obtainProduct(id)
+    if (product === null) {
+      return res.status(404).json({
         message: 'El producto no existe'
       })
-      return
     }
-    if (product.image?.public_id) {
-      deleteImage(product.image.public_id)
-      res.status(200).json({
-        message: 'Eliminado correctamente'
+    if (product.image && product.image?.public_id) {
+      await services.delete(product)
+      res.status(200).json({ message: 'Eliminado correctamente ' })
+    } else {
+      return res.status(400).json({
+        message: 'No se puede eliminar el producto sin una imagen válida'
       })
     }
   } catch (err) {
-    console.log(`Error al eliminar el producto u/o imagen: --> ${err}`)
+    console.error(err)
+    throw new Error('Error al eliminar el producto u/o imagen')
   }
 }
 
 export const updateProduct = async (req, res) => {
   const { id } = req.params
   const { price, stock } = req.body
+  const services = new ProductService()
 
   try {
-    const productFound = await Product.findOne({ _id: id })
-    if (!productFound) {
+    if (!await services.obtainProduct(id)) {
       res.status(401).json({
         message: 'No se encontró ningun producto'
       })
       return
     }
 
-    await Product.findOneAndUpdate(
-      { _id: id },
-      {
-        price,
-        stock,
-        updateAt: Date.now()
-      },
-      {
-        new: true
-      }
-    )
+    await services.update(id, price, stock)
+
     res.status(200).json({
-      message: 'Product actualizado correctamente'
+      message: 'Producto actualizado correctamente'
     })
   } catch (err) {
     console.log(err)
@@ -116,21 +93,22 @@ export const updateProduct = async (req, res) => {
 
 export const getProductsByFilter = async (req, res) => {
   const category = req.query.category.trim()
-  try {
-    const filterFound = !CATEGORIES.includes(category)
+  const validate = new ProductValidate()
+  const services = new ProductService()
 
-    if (filterFound) {
-      return res.status(401).json({
+  try {
+    if (!validate.correctCategory(category)) {
+      return res.status(404).json({
         message: 'El filtro es incorrecto'
       })
     }
 
-    const products = await Product.find({ category })
+    const products = await services.filter(category)
     res.status(200).json({
       products
     })
   } catch (err) {
-    console.log(err)
+    console.error(err)
     res.status(500).json({ message: 'Error en el servidor' })
   }
 }

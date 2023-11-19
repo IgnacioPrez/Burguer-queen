@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-export const ordersSchema = new Schema({
+export const orderSchema = new Schema({
   fullName: { type: String, required: true },
   streetNumber: { type: Number },
   streetName: { type: String, required: true },
@@ -21,4 +21,4 @@ export const ordersSchema = new Schema({
   createdAt: { type: Date, default: Date.now() }
 })
 
-export const Orders = model('Order', ordersSchema)
+export const Order = model('Order', orderSchema)

@@ -9,10 +9,3 @@ export const ROLES = {
 export const PORT = process.env.PORT
 
 export const CATEGORIES = ['burguer', 'fries']
-
-export const ALLROUTES = {
-  USER_ROUTES: '/user',
-  PRODUCT_ROUTES: '/product',
-  ORDER_ROUTES: '/orders',
-  PAYMENT_ROUTES: '/payment'
-}

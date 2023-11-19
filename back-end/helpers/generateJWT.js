@@ -14,7 +14,7 @@ export const tokenGenerator = (id, res) => {
       },
       (err, token) => {
         if (err) {
-          reject('Error al generar un token')
+          reject(new Error('Error al generar un token'))
         } else {
           resolve(token)
         }
