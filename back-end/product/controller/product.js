@@ -95,7 +95,8 @@ export const getProductsByFilter = async (req, res) => {
   const category = req.query.category.trim()
   const validate = new ProductValidate()
   const services = new ProductService()
-
+  const page = req.query.page || 1
+  const limit = req.query.limit || 10
   try {
     if (!validate.correctCategory(category)) {
       return res.status(404).json({
@@ -103,7 +104,7 @@ export const getProductsByFilter = async (req, res) => {
       })
     }
 
-    const products = await services.filter(category)
+    const products = await services.filter(category, page, limit)
     res.status(200).json({
       products
     })

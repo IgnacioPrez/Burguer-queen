@@ -1,9 +1,26 @@
+import { useEffect, useState } from 'react'
 import { FilterProducts } from '../filterProducts'
 import { ListProducts } from '../list-products'
 import { AddBtn, AddProduct, HeaderCrud, Main, TitleCrud } from './styles'
 import AddIcon from '@mui/icons-material/Add'
+import { useDispatch } from 'react-redux'
+import { getProducts } from '../../../services/connectDB'
+import { obtainProducts } from '../../../redux/slices/productSlice'
 
 const ProductMain = ({ openForm }) => {
+  const [loading, setLoading] = useState(true)
+
+  const stopLoading = () => setLoading(false)
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    const obtainAllproducts = async () => {
+      const data = await getProducts(stopLoading)
+      return dispatch(obtainProducts(data))
+    }
+    obtainAllproducts()
+  }, [])
+
   return (
     <Main>
       <HeaderCrud>
@@ -17,8 +34,8 @@ const ProductMain = ({ openForm }) => {
           </AddBtn>
         </AddProduct>
       </HeaderCrud>
-      <FilterProducts />
-      <ListProducts />
+      <FilterProducts stopLoading={stopLoading} />
+      <ListProducts loading={loading} />
 
     </Main>
   )

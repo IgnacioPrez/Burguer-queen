@@ -3,14 +3,13 @@ import { HeaderContainer, HeaderContent } from './styles'
 import Avatar from '@mui/material/Avatar'
 import { useSelector } from 'react-redux'
 const Header = () => {
-  const { userName } = useSelector((store) => store.user)
-
-  console.log()
+  const { fullName } = useSelector((store) => store.user)
+  const convertName = name => name.split(' ').splice(1, 3).map((el) => el.split('').slice(0, 1)).join('').trim()
   return (
     <HeaderContainer>
       <HeaderContent>
-        <h1>Hola, {userName} 🖐</h1>
-        <Avatar sx={{ bgcolor: 'rgb(103, 58, 183)' }}>{userName.split('')[0].toUpperCase()}</Avatar>
+        <h1>Hola, {fullName.split(' ').splice(1, 3).join(' ')} 🖐</h1>
+        <Avatar sx={{ bgcolor: 'rgb(103, 58, 183)' }}>{convertName(fullName)}</Avatar>
       </HeaderContent>
     </HeaderContainer>
   )

@@ -1,39 +1,42 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = [
-  {
-    id: 1,
-    client: 'cliente1',
-    destiny: 'destino 1',
-    order: '1 bajón, papas cheddar',
-    total: 3600
-  },
-  {
-    id: 2,
-    client: 'cliente2',
-    destiny: 'destino 1',
-    order: '1 bajón, 1 gaseosa fanta, papas cheddar',
-    total: 5000
-  },
-  {
-    id: 3,
-    client: 'cliente3',
-    destiny: 'destino 1',
-    order: '1 gaseosa fanta, papas cheddar',
-    total: 2800
-  }
-]
+const initialState = {
+  items: [],
+  hasNextPage: null,
+  hasPrevPage: null,
+  limit: null,
+  nextPage: null,
+  page: 1,
+  pagingCounter: null,
+  prevPage: 10,
+  totalDocs: null,
+  totalPages: 10
+}
 
 const productSlice = createSlice({
   name: 'product',
   initialState,
   reducers: {
-    deleteProduct: (state, action) => {
-      return state.filter((product) => product.id !== action.payload)
+    obtainProducts: (state, action) => {
+      const { docs, hasNextPage, hasPrevPage, limit, nextPage, page, pagingCounter, prevPage, totalDocs, totalPages } = action.payload
+      return {
+        ...state,
+        items: docs,
+        hasNextPage,
+        hasPrevPage,
+        limit,
+        nextPage,
+        page,
+        pagingCounter,
+        prevPage,
+        totalDocs,
+        totalPages
+      }
     }
   }
+
 })
 
-export const { deleteProduct } = productSlice.actions
+export const { obtainProducts } = productSlice.actions
 
 export default productSlice.reducer

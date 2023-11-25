@@ -33,10 +33,12 @@ export default function Login () {
         headers: {
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(values)
       })
         .then((data) => data.json())
         .then((result) => {
+          console.log(result)
           if (result) {
             dispatch(login(result))
             navigate(`/${PrivateRoutes.PRIVATE}`, { replace: true })
@@ -76,11 +78,11 @@ export default function Login () {
                 <TextField
                   required
                   fullWidth
-                  label='Nombre de usuario'
-                  {...getFieldProps('userName')}
+                  label='Correo'
+                  {...getFieldProps('email')}
                   margin='normal'
-                  iserror={touched.userName && errors.userName}
-                  error={!!errors.userName && touched.userName}
+                  iserror={touched.email && errors.email}
+                  error={!!errors.email && touched.email}
                 />
               </Grid>
               <Grid item xs={12}>
