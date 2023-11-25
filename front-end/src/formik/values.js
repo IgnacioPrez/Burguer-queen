@@ -7,6 +7,6 @@ export const initialValuesRegister = {
 }
 
 export const initialValuesLogin = {
-  userName: '',
+  email: '',
   password: ''
 }

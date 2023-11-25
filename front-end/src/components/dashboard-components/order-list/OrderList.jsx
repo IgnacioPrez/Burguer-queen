@@ -1,10 +1,11 @@
 import { ListOrderContainer, OrderContainer } from './style'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteProduct } from '../../../redux/slices/productSlice'
 import { Order } from '../order/'
+import { deleteProduct } from '../../../redux/slices/orderSlice'
 
 const OrderList = () => {
-  const products = useSelector((store) => store.product)
+  const orders = useSelector((store) => store.order)
+  console.log(orders)
   const dispatch = useDispatch()
 
   const orderSent = (id) => {
@@ -15,7 +16,7 @@ const OrderList = () => {
     <OrderContainer>
 
       <ListOrderContainer>
-        {products.map((product) => {
+        {orders.map((product) => {
           return <Order key={product.id} {...product} orderSent={() => orderSent(product.id)} />
         })}
       </ListOrderContainer>

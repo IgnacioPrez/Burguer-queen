@@ -20,7 +20,6 @@ const Private = () => {
     }
   }, [path])
 
-  console.log(path)
   return (
     <RoutesWithNotFound>
       <Route path='/' element={<Navigate to={PrivateRoutes.DASHBOARD} />} />

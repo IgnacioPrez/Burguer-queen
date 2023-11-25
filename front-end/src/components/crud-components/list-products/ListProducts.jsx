@@ -2,13 +2,15 @@ import { ActionsContent, ContainerList, ConteinerProducts, Product, ProductName,
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { PaginationList } from '../pagination-list'
-import { useDispatch } from 'react-redux'
-import { BURGUERS, TYPES_MODAL } from '../../../utilities/constant'
+import { useDispatch, useSelector } from 'react-redux'
+import { TYPES_MODAL } from '../../../utilities/constant'
 import { openModal } from '../../../redux/slices/modalSlices'
+import { ProductSkeleton } from '../product-skeleton'
 
-const ListProducts = () => {
+const ListProducts = ({ loading }) => {
   const dispatch = useDispatch()
 
+  const { items } = useSelector((store) => store.product)
   const handleOPen = (id, type) => {
     return type === TYPES_MODAL.EDIT
       ? dispatch(openModal({
@@ -36,29 +38,31 @@ const ListProducts = () => {
         </ul>
       </TitleList>
       <ContainerList>
-        {BURGUERS.map(({ title, id, image, category, price, stock, status }) => {
-          return (
-            <Product key={id} status={status}>
+        {items.map(({ title, _id, image, category, price, stock }) => {
+          return loading
+            ? (
+              <ProductSkeleton key={_id} />
+              )
+            : (<Product key={_id} status={stock}>
               <ProductName>
                 <div>
-                  <img src={image} alt={title} />
+                  <img src={image.url} alt={title} />
                 </div>
                 <p>{title}</p>
               </ProductName>
               <p>{category}</p>
-              <p>{stock}</p>
+              <p>{10}</p>
               <p>{price}</p>
-              <p>{status ? 'Disponible' : 'Agotado'}</p>
+              <p>{stock ? 'Disponible' : 'Agotado'}</p>
               <ActionsContent>
-                <div onClick={() => { handleOPen(id, TYPES_MODAL.EDIT) }}>
+                <div onClick={() => { handleOPen(_id, TYPES_MODAL.EDIT) }}>
                   <EditIcon />
                 </div>
-                <div onClick={() => handleOPen(id, TYPES_MODAL.DELETE)}>
+                <div onClick={() => handleOPen(_id, TYPES_MODAL.DELETE)}>
                   <DeleteIcon />
                 </div>
               </ActionsContent>
-            </Product>
-          )
+            </Product>)
         })}
         <PaginationList />
       </ContainerList>

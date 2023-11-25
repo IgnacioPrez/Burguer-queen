@@ -12,6 +12,6 @@ export const validationSchemaSignup = Yup.object({
 })
 
 export const validationSchemaLogin = Yup.object({
-  userName: Yup.string().trim().required('Campo requerido'),
+  email: Yup.string().email().trim().required('Campo requerido'),
   password: Yup.string().trim().required('Contraseña requerida')
 })

@@ -47,8 +47,12 @@ export class ProductService {
     )
   }
 
-  async filter (category) {
-    return await Product.find({ category })
+  async filter (category, page, limit) {
+    const options = {
+      page,
+      limit
+    }
+    return await Product.paginate({ category }, options)
   }
 }
 

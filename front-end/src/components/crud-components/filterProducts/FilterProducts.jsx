@@ -2,7 +2,7 @@ import { SearchByFilter } from '../search-by-filter'
 import { ContainerFilter, FilterContent, SearchFilter } from './styles'
 import SearchIcon from '@mui/icons-material/Search'
 
-const FilterProducts = () => {
+const FilterProducts = ({ stopLoading }) => {
   return (
     <ContainerFilter>
       <SearchFilter>
@@ -10,7 +10,7 @@ const FilterProducts = () => {
         <input type='text' placeholder='Busca tu producto' />
       </SearchFilter>
       <FilterContent>
-        <SearchByFilter />
+        <SearchByFilter stopLoading={stopLoading} />
       </FilterContent>
     </ContainerFilter>
   )

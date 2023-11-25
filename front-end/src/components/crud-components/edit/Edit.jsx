@@ -1,9 +1,8 @@
 import { EditContainer, EditFields, FieldsRows, SelectedProduct } from './styles'
-import sampleImage from '../../../assets/img/istockphoto-1398630614-1024x1024.jpg'
 import { Button, TextField } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-
+import SearchIcon from '@mui/icons-material/Search'
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
   clipPath: 'inset(50%)',
@@ -20,7 +19,7 @@ const Edit = () => {
   return (
     <EditContainer>
       <SelectedProduct>
-        <img src={sampleImage} alt='sample image' />
+        <SearchIcon />
         <p>Nombre de hamburguesa</p>
       </SelectedProduct>
       <EditFields>

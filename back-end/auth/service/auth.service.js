@@ -25,7 +25,6 @@ export class AuthService {
       generateRefreshToken(user._id, res)
       return {
         id: user._id,
-        userName: user.userName,
         fullName: user.fullName
       }
     }
