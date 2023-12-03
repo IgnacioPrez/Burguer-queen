@@ -9,7 +9,7 @@ export const ContainerFilter = styled.section`
 
 `
 
-export const SearchFilter = styled.div`
+export const SearchFilter = styled.form`
   border: solid 1px #e0e2e7;
   display: flex;
   justify-content: flex-start;

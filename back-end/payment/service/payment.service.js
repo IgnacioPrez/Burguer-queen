@@ -35,7 +35,7 @@ export class PaymentService {
         failure: `http://localhost:${PORT}/payment/failure`,
         pending: `http://localhost:${PORT}/payment/pending`
       },
-      notification_url: `https://e2e8-181-117-24-37.ngrok.io/payment/webhook/${id}`
+      notification_url: `https://5960-181-117-24-37.ngrok.io/payment/webhook/${id}`
     })
   }
 
@@ -59,7 +59,7 @@ export class PaymentService {
 }
 
 export class PaymentValidate {
-  async existsOrder (orderId) {
+  async foundOrder (orderId) {
     return await Order.findOne({ _id: orderId, isPay: false })
   }
 }

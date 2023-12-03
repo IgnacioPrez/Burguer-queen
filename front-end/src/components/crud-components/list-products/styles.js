@@ -34,6 +34,7 @@ export const ContainerList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 100%;
 `
 
 export const Product = styled.div`

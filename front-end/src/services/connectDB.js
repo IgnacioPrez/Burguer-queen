@@ -32,3 +32,16 @@ export async function filterProducts (category, stopLoading) {
     stopLoading()
   }
 }
+
+export async function getOrders () {
+  try {
+    const response = await fetch(`${baseURL}/orders/`, {
+      method: 'GET',
+      credentials: 'include'
+    })
+    const result = await response.json()
+    return await result
+  } catch (err) {
+    throw new Error('Error al obtener las ordenes: ', err)
+  }
+}

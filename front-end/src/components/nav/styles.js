@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { PrivateRoutes } from '../../routes/routes'
 
 export const NavContent = styled.div`
   width: 15vw;
@@ -31,31 +30,12 @@ export const NavList = styled.ul`
   flex-direction: column;
   width: 100%;
 
-  ${(props) => {
-    return props.location === PrivateRoutes.DASHBOARD
-? (
-      `
-        li:nth-child(1){
-          background-color:${props.theme.hoverNav};
-          color:${props.theme.firstTextColorNav};
-        }
-      `
-    )
-: `
-        li:nth-child(2){
-          background-color:${props.theme.hoverNav};
-          color:${props.theme.firstTextColorNav};
-        }
-      `
-  }}
-
   li {
     display: flex;
     text-align: center;
     justify-content: center;
     align-items: center;
     height: 44px;
-    padding: 12px;
     color: ${(props) => props.theme.secondTextColorNav};
     position: relative;
     cursor: pointer;
