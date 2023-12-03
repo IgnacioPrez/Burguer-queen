@@ -1,17 +1,14 @@
-import { useContext } from 'react'
 import HomeIcon from '@mui/icons-material/Home'
 import FastfoodIcon from '@mui/icons-material/Fastfood'
 import { LogoutContent, NavContent, NavList, Navbar } from './styles'
 import LogoutIcon from '@mui/icons-material/Logout'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { PrivateRoutes } from '../../routes/routes'
-import { LocationContext } from '../../context/LocationContext'
 import { useDispatch } from 'react-redux'
 import { logout } from '../../redux/slices/authSlices'
 import { baseURL } from '../../utilities/constant'
 
-const NavAdmin = () => {
-  const { location, locationIsHome, locationIsCRUD } = useContext(LocationContext)
+const NavAdmin = (props) => {
   const dispatch = useDispatch()
 
   const endSesion = () => {
@@ -29,18 +26,32 @@ const NavAdmin = () => {
     <NavContent>
       <h2>Admin</h2>
       <Navbar>
-        <NavList location={location}>
+        <NavList>
           <li>
             <HomeIcon />
-            <Link to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.DASHBOARD}`} onClick={locationIsHome}>
+            <NavLink
+              to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.DASHBOARD}`} style={({ isActive }) => {
+                return {
+                  backgroundColor: isActive ? 'rgb(96, 98, 110)' : 'inherit',
+                  color: isActive ? '#DDE2FF' : 'inherit'
+                }
+              }}
+            >
               General
-            </Link>
+            </NavLink>
           </li>
           <li>
             <FastfoodIcon />
-            <Link to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.CRUD_PRODUCTS}`} onClick={locationIsCRUD}>
+            <NavLink
+              to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.CRUD_PRODUCTS}`} style={({ isActive }) => {
+                return {
+                  backgroundColor: isActive ? 'rgb(96, 98, 110)' : 'inherit',
+                  color: isActive ? '#DDE2FF' : 'inherit'
+                }
+              }}
+            >
               Productos
-            </Link>
+            </NavLink>
           </li>
         </NavList>
       </Navbar>

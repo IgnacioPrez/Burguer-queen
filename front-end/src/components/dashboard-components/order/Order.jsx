@@ -1,59 +1,81 @@
 import CloseIcon from '@mui/icons-material/Close'
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining'
-import { OrderBody, OrderBought, OrderBtn, OrderInfo, OrderTitle } from './styles'
-import { useEffect, useState } from 'react'
+import { Details, OrderBody, OrderBought, OrderBtn, OrderInfo, OrderTitle } from './styles'
+import { useEffect, useState, memo } from 'react'
+import { Button, Menu, MenuItem } from '@mui/material'
+import SortIcon from '@mui/icons-material/Sort'
+import { useDispatch } from 'react-redux'
+import { moreMin } from '../../../redux/slices/orderSlice'
+const Order = ({ fullName, city, items, totalPrice, streetName, shippingCost, extra, _id, min }) => {
+  const dispatch = useDispatch()
+  const [openList, setOpenList] = useState(null)
+  const open = Boolean(openList)
 
-const Order = ({ client, destiny, order, total, orderSent }) => {
-  const convertPrice = (price) => price.toLocaleString('es-Ar', { style: 'currency', currency: 'ARS' })
-
-  const [min, setMin] = useState(0)
-  const [seg, setSeg] = useState(0)
-  const [retarded, setRetarded] = useState(false)
-
-  const changeTime = () => {
-    setSeg((prevState) => prevState + 1)
+  const showList = (event) => {
+    setOpenList(event.currentTarget)
   }
 
+  const closeListBurguer = () => {
+    setOpenList(null)
+  }
+  const convertPrice = (price) => price.toLocaleString('es-Ar', { style: 'currency', currency: 'ARS' })
+
   useEffect(() => {
-    if (!retarded) {
-      const timer = setInterval(() => {
-        changeTime()
-
-        if (seg >= 59) {
-          setMin((prevMin) => prevMin + 1)
-        }
-
-        if (min >= 15) {
-          setRetarded(true)
-          setSeg(0)
-          clearInterval(timer)
-        }
-      }, 1000)
-      return () => clearInterval(timer)
-    }
-  }, [min, seg])
-
+    const values = { time: 1, id: _id }
+    const timer = setInterval(() => {
+      dispatch(moreMin(values))
+      if (min >= 15) {
+        clearInterval(timer)
+      }
+    }, 60000)
+    return () => clearInterval(timer)
+  }, [min])
   return (
     <OrderBought>
       <OrderBtn>
-        <button onClick={orderSent}>
+        <button>
           <CloseIcon />
         </button>
       </OrderBtn>
       <OrderBody>
         <OrderTitle>
-          <p>Comprador: {client}</p>
+          <p>Clienta/e: {fullName}</p>
         </OrderTitle>
-        <OrderInfo min={min} retarded={retarded}>
+        <OrderInfo min={min}>
           <DeliveryDiningIcon />
           <p>
-            <span>Destino:</span> {destiny}
+            <span>Destino: {city}</span>
+            <span>{streetName}</span>
           </p>
+          <Details>
+            <Button
+              aria-controls={open ? 'basic-menu' : undefined}
+              aria-haspopup='true'
+              aria-expanded={open ? 'true' : undefined}
+              onClick={showList}
+              sx={{ gap: '5px' }}
+            >
+              <SortIcon />
+              Pedido
+            </Button>
+            <Menu
+              id='basic-menu'
+              anchorEl={openList}
+              open={open}
+              onClose={closeListBurguer}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button'
+              }}
+            >
+              {items.map((el) => <MenuItem key={crypto.randomUUID()} onClick={closeListBurguer}>{el.title}</MenuItem>)}
+            </Menu>
+          </Details>
           <p>
-            <span>Orden:</span> {order}
+            <span>Costos de envio: </span> {convertPrice(shippingCost)}
           </p>
+          {extra && <p> <span>Agregados: </span> {extra} </p>}
           <p>
-            <span>Total:</span> {convertPrice(total)}
+            <span>Total:</span> {convertPrice(totalPrice)}
           </p>
         </OrderInfo>
       </OrderBody>
@@ -61,4 +83,4 @@ const Order = ({ client, destiny, order, total, orderSent }) => {
   )
 }
 
-export default Order
+export const MemoizedOrder = memo(Order)

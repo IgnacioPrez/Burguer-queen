@@ -1,23 +1,15 @@
 import { ListOrderContainer, OrderContainer } from './style'
-import { useDispatch, useSelector } from 'react-redux'
-import { Order } from '../order/'
-import { deleteProduct } from '../../../redux/slices/orderSlice'
+import { useSelector } from 'react-redux'
+import { MemoizedOrder } from '../order/Order'
 
 const OrderList = () => {
   const orders = useSelector((store) => store.order)
-  console.log(orders)
-  const dispatch = useDispatch()
-
-  const orderSent = (id) => {
-    dispatch(deleteProduct(id))
-  }
-
   return (
     <OrderContainer>
 
       <ListOrderContainer>
-        {orders.map((product) => {
-          return <Order key={product.id} {...product} orderSent={() => orderSent(product.id)} />
+        {orders.allOrders && orders.allOrders.map((product) => {
+          return <MemoizedOrder key={product._id} {...product} />
         })}
       </ListOrderContainer>
     </OrderContainer>

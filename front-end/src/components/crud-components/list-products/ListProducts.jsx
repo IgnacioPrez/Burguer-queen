@@ -62,10 +62,11 @@ const ListProducts = ({ loading }) => {
                   <DeleteIcon />
                 </div>
               </ActionsContent>
-            </Product>)
+               </Product>)
         })}
-        <PaginationList />
       </ContainerList>
+      <PaginationList />
+
     </ConteinerProducts>
   )
 }
