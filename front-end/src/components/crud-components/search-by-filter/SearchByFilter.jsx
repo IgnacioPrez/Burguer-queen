@@ -52,6 +52,7 @@ export const SearchByFilter = ({ stopLoading }) => {
         aria-haspopup='true'
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
+        size='small'
       >
         <TuneIcon />
         Filtros

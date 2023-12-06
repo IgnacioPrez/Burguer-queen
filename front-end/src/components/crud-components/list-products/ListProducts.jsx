@@ -9,8 +9,8 @@ import { ProductSkeleton } from '../product-skeleton'
 
 const ListProducts = ({ loading }) => {
   const dispatch = useDispatch()
+  const { unfiltered, withFilters } = useSelector((store) => store.product)
 
-  const { items } = useSelector((store) => store.product)
   const handleOPen = (id, type) => {
     return type === TYPES_MODAL.EDIT
       ? dispatch(openModal({
@@ -38,32 +38,65 @@ const ListProducts = ({ loading }) => {
         </ul>
       </TitleList>
       <ContainerList>
-        {items.map(({ title, _id, image, category, price, stock }) => {
-          return loading
-            ? (
-              <ProductSkeleton key={_id} />
-              )
-            : (<Product key={_id} status={stock}>
-              <ProductName>
-                <div>
-                  <img src={image.url} alt={title} />
-                </div>
-                <p>{title}</p>
-              </ProductName>
-              <p>{category}</p>
-              <p>{10}</p>
-              <p>{price}</p>
-              <p>{stock ? 'Disponible' : 'Agotado'}</p>
-              <ActionsContent>
-                <div onClick={() => { handleOPen(_id, TYPES_MODAL.EDIT) }}>
-                  <EditIcon />
-                </div>
-                <div onClick={() => handleOPen(_id, TYPES_MODAL.DELETE)}>
-                  <DeleteIcon />
-                </div>
-              </ActionsContent>
+        {
+         !withFilters.length > 0
+           ? unfiltered.items.map(({ title, _id, image, category, price, stock }) => {
+             return loading
+               ? (
+                 <ProductSkeleton key={_id} />
+                 )
+               : (<Product key={_id} status={stock}>
+                 <ProductName>
+                   <div>
+                     <img src={image.url} alt={title} />
+                   </div>
+                   <p>{title}</p>
+                 </ProductName>
+                 <p>{category}</p>
+                 <p>{10}</p>
+                 <p>{price}</p>
+                 <p>{stock ? 'Disponible' : 'Agotado'}</p>
+                 <ActionsContent>
+                   <div onClick={() => { handleOPen(_id, TYPES_MODAL.EDIT) }}>
+                     <EditIcon />
+                   </div>
+                   <div onClick={() => handleOPen(_id, TYPES_MODAL.DELETE)}>
+                     <DeleteIcon />
+                   </div>
+                 </ActionsContent>
                </Product>)
-        })}
+           })
+
+           : withFilters.map(({ title, _id, image, category, price, stock }) => {
+             return loading
+               ? (
+                 <ProductSkeleton key={_id} />
+                 )
+               : (
+                 <Product key={_id} status={stock}>
+                   <ProductName>
+                     <div>
+                       <img src={image.url} alt={title} />
+                     </div>
+                     <p>{title}</p>
+                   </ProductName>
+                   <p>{category}</p>
+                   <p>{10}</p>
+                   <p>{price}</p>
+                   <p>{stock ? 'Disponible' : 'Agotado'}</p>
+                   <ActionsContent>
+                     <div onClick={() => { handleOPen(_id, TYPES_MODAL.EDIT) }}>
+                       <EditIcon />
+                     </div>
+                     <div onClick={() => handleOPen(_id, TYPES_MODAL.DELETE)}>
+                       <DeleteIcon />
+                     </div>
+                   </ActionsContent>
+                 </Product>
+                 )
+           })
+
+        }
       </ContainerList>
       <PaginationList />
 
