@@ -45,9 +45,3 @@ const orderSlice = createSlice({
 export const { updateList, moreMin } = orderSlice.actions
 
 export default orderSlice.reducer
-
-function actualizarProductosEnStore (productosEnStore, nuevosProductos) {
-  const nuevosIds = nuevosProductos.map(producto => producto.id)
-
-  // Filtrar solo los nuevos productos que no están en el store
-}
