@@ -46,7 +46,7 @@ export const Product = styled.div`
     text-align: center;
   }
   padding: 3px;
-  :nth-child(5) {
+  :nth-child(4) {
     font-weight: bold;
     ${(props) => (props.status ? 'color:#1A9882' : 'color:#EB3D4D')}
   }

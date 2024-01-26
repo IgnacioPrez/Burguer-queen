@@ -25,7 +25,7 @@ const ProductMain = ({ openForm }) => {
     <Main>
       <HeaderCrud>
         <TitleCrud>
-          <p>Productos de Burguer Queen 🍔</p>
+          <p>Productos  🍔</p>
         </TitleCrud>
         <AddProduct>
           <AddBtn onClick={openForm}>

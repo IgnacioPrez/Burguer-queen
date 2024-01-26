@@ -1,12 +1,13 @@
 import CloseIcon from '@mui/icons-material/Close'
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining'
 import { Details, OrderBody, OrderBought, OrderBtn, OrderInfo, OrderTitle } from './styles'
-import { useEffect, useState, memo } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Menu, MenuItem } from '@mui/material'
 import SortIcon from '@mui/icons-material/Sort'
 import { useDispatch } from 'react-redux'
 import { moreMin } from '../../../redux/slices/orderSlice'
-const Order = ({ fullName, city, items, totalPrice, streetName, shippingCost, extra, _id, min }) => {
+
+export const NewOrder = ({ fullName, city, items, totalPrice, streetName, shippingCost, extra, _id, min }) => {
   const dispatch = useDispatch()
   const [openList, setOpenList] = useState(null)
   const open = Boolean(openList)
@@ -23,13 +24,12 @@ const Order = ({ fullName, city, items, totalPrice, streetName, shippingCost, ex
   useEffect(() => {
     const values = { time: 1, id: _id }
     const timer = setInterval(() => {
+      if (min > 15) return
       dispatch(moreMin(values))
-      if (min >= 15) {
-        clearInterval(timer)
-      }
     }, 60000)
     return () => clearInterval(timer)
   }, [min])
+
   return (
     <OrderBought>
       <OrderBtn>
@@ -82,5 +82,3 @@ const Order = ({ fullName, city, items, totalPrice, streetName, shippingCost, ex
     </OrderBought>
   )
 }
-
-export const MemoizedOrder = memo(Order)

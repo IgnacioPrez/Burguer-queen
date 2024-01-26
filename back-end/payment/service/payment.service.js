@@ -35,7 +35,7 @@ export class PaymentService {
         failure: `http://localhost:${PORT}/payment/failure`,
         pending: `http://localhost:${PORT}/payment/pending`
       },
-      notification_url: `https://5960-181-117-24-37.ngrok.io/payment/webhook/${id}`
+      notification_url: `https://c711-186-122-88-181.ngrok-free.app/payment/webhook/${id}`
     })
   }
 

@@ -38,7 +38,6 @@ export default function Login () {
       })
         .then((data) => data.json())
         .then((result) => {
-          console.log(result)
           if (result) {
             dispatch(login(result))
             navigate(`/${PrivateRoutes.PRIVATE}`, { replace: true })

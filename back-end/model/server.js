@@ -7,8 +7,10 @@ import cookieParser from 'cookie-parser'
 import orderRoutes from '../order/routes/orders.routes.js'
 import paymentRoutes from '../payment/routes/payment.routes.js'
 import { connectDB } from '../config/db.js'
+import http from 'http'
 
 config()
+
 export class Server {
   constructor () {
     this.app = express()
@@ -17,6 +19,7 @@ export class Server {
     this.orderRoute = '/orders'
     this.paymentRoute = '/payment'
     this.productRoute = '/product'
+    this.socketServer = http.createServer(this.app)
     this.startDb()
     this.middlewares()
     this.routes()
@@ -27,7 +30,7 @@ export class Server {
   }
 
   listen () {
-    this.app.listen(this.port, () => {
+    this.socketServer.listen(this.port, () => {
       console.log(`Listening on port: ${this.port}`)
     })
   }

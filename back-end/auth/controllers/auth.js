@@ -4,8 +4,6 @@ import { AuthService, AuthValidate } from '../service/auth.service.js'
 
 config()
 
-// TODO: ERROR AL MANIPULAR EL TOKEN PARA FUTURAS PETICIONES
-
 export const register = async (req, res) => {
   const { userName, fullName, email, password, dni } = req.body
   const services = new AuthService()
@@ -97,3 +95,13 @@ export const verifyUser = async (req, res) => {
     })
   }
 }
+
+// TODO: DESABILITAR REFRESHTOKEN
+
+// app.post('/token/reject', function (req, res, next) {
+//   var refreshToken = req.body.refreshToken
+//   if(refreshToken in refreshTokens) {
+//     delete refreshTokens[refreshToken]
+//   }
+//   res.send(204)
+// })

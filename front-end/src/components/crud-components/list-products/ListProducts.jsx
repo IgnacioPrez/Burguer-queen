@@ -31,7 +31,6 @@ const ListProducts = ({ loading }) => {
         <ul>
           <li>Producto</li>
           <li>Categoría</li>
-          <li>Stock</li>
           <li>Precio</li>
           <li>Estado</li>
           <li>Acciones</li>
@@ -53,7 +52,6 @@ const ListProducts = ({ loading }) => {
                    <p>{title}</p>
                  </ProductName>
                  <p>{category}</p>
-                 <p>{10}</p>
                  <p>{price}</p>
                  <p>{stock ? 'Disponible' : 'Agotado'}</p>
                  <ActionsContent>
@@ -64,7 +62,7 @@ const ListProducts = ({ loading }) => {
                      <DeleteIcon />
                    </div>
                  </ActionsContent>
-               </Product>)
+                  </Product>)
            })
 
            : withFilters.map(({ title, _id, image, category, price, stock }) => {

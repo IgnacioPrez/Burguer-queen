@@ -7,8 +7,7 @@ import { useDispatch } from 'react-redux'
 import { addSearch, clearSearch } from '../../../redux/slices/productSlice'
 import CloseIcon from '@mui/icons-material/Close'
 
-const app = new Realm.App({ id: import.meta.env.VITE_APP_ID_MONGOREAL })
-
+const appDB = new Realm.App({ id: import.meta.env.VITE_APP_ID_MONGOREAL })
 const FilterProducts = ({ stopLoading }) => {
   const [search, setSearch] = useState('')
   const [autoComplete, setAutoComplete] = useState([])
@@ -28,7 +27,7 @@ const FilterProducts = ({ stopLoading }) => {
 
   const searchInDb = async (text) => {
     try {
-      const user = await app.logIn(Realm.Credentials.anonymous())
+      const user = await appDB.logIn(Realm.Credentials.anonymous())
       const resultOfSearch = await user.functions.searchProducts(text)
       return resultOfSearch ? dispatch(addSearch(resultOfSearch)) : null
     } catch (err) {
@@ -47,7 +46,7 @@ const FilterProducts = ({ stopLoading }) => {
 
   const showOptions = async (text) => {
     try {
-      const user = await app.logIn(Realm.Credentials.anonymous())
+      const user = await appDB.logIn(Realm.Credentials.anonymous())
       const getOptions = await user.functions.searchAutoComplete(text)
       setAutoComplete(() => getOptions)
     } catch (err) {
@@ -104,7 +103,7 @@ const FilterProducts = ({ stopLoading }) => {
         <button onClick={clearMyPrevSearch}>
           <CloseIcon />
         </button>
-      </MySearch>
+                               </MySearch>
       }
     </ContainerFilter>
   )

@@ -7,6 +7,7 @@ import { PrivateRoutes } from '../../routes/routes'
 import { useDispatch } from 'react-redux'
 import { logout } from '../../redux/slices/authSlices'
 import { baseURL } from '../../utilities/constant'
+import { persistor } from '../../redux/store'
 
 const NavAdmin = (props) => {
   const dispatch = useDispatch()
@@ -17,6 +18,7 @@ const NavAdmin = (props) => {
       .then((result) => {
         if (result.ok) {
           dispatch(logout())
+          persistor.purge()
         }
       })
       .catch((err) => console.error(err))
