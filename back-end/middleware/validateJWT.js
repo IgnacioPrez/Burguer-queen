@@ -1,24 +1,21 @@
 import jwt from 'jsonwebtoken'
-import { User } from '../model/user.model.js'
+import { User } from '../auth/model/user.model.js'
 import { config } from 'dotenv'
 
 config()
 
 export const validateJWT = async (req, res, next) => {
-  const { token } = req.cookies
-
-  if (!token) {
-    res.status(401).json({
-      message: 'No existe un token en la petición'
-    })
-    return
-  }
+  const { refreshToken } = req.cookies
 
   try {
-    const secretKey = process.env.SECRET_PASSWORD
-    const payload = jwt.verify(token, secretKey)
-    const { id } = payload
-    const userConfirmed = await User.findById({ _id: id })
+    if (!refreshToken) {
+      res.status(401).json({
+        message: 'No existe un token en la petición'
+      })
+      return
+    }
+    const payload = jwt.verify(refreshToken, process.env.SECRET_PASSWORD_REFRESH)
+    const userConfirmed = await User.findById({ _id: payload.id })
 
     if (!userConfirmed) {
       res.status(401).json({
